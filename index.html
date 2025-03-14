@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialGIFMaker - AI-Powered GIFs for Social Media Marketers</title>
+    <meta name="description" content="Create GIFs for social media with AI-powered tools. Perfect for marketers on Instagram, TikTok, and Twitter. Fast, free, and easy!">
+    <meta property="og:title" content="SocialGIFMaker - AI-Powered GIFs for Social Media">
+    <meta property="og:description" content="Create GIFs for social media with AI-powered tools. Perfect for marketers on Instagram, TikTok, and Twitter. Fast, free, and easy!">
+    <meta property="og:image" content="https://socialgifmaker.com/images/preview.png">
+    <meta property="og:url" content="https://socialgifmaker.com">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        header { display: flex; justify-content: space-between; align-items: center; }
+        nav ul { list-style: none; display: flex; gap: 20px; }
+        .btn { background-color: #007bff; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        .btn:hover { background-color: #0056b3; }
+        section { margin: 20px 0; }
+        footer { text-align: center; margin-top: 40px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/gif.js/dist/gif.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/" title="AI-Powered GIF Tools for Social Media">SocialGIFMaker <span>Create Viral GIFs</span></a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/gif-maker">GIF Maker</a></li>
+                <li><a href="/templates">Social Templates</a></li>
+                <li><a href="/ai-suggestions">AI Suggestions</a></li>
+                <li><a href="/share">Share Directly</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>AI-Powered GIF Maker for Social Media Marketers</h1>
+        <form id="upload-form">
+            <fieldset>
+                <legend>Upload Your Files</legend>
+                <p><label for="files">Drag and drop or choose files:</label></p>
+                <input type="file" name="files[]" id="files" multiple accept="image/*,video/*">
+                <p><label for="url">Or enter file URL:</label></p>
+                <input type="text" name="url" id="url" placeholder="https://example.com/image.jpg">
+                <p>Supports GIF, JPG, PNG, MP4. Max size: 100MB.</p>
+                <button type="submit" class="btn">Create GIF!</button>
+            </fieldset>
+        </form>
+
+        <section class="ai-suggestions">
+            <h2>AI-Powered Caption Suggestions</h2>
+            <p>Here are some trending captions for your GIF:</p>
+            <ul>
+                <li>#SocialMediaMagic</li>
+                <li>Engage your audience!</li>
+                <li>Go viral with this GIF</li>
+            </ul>
+        </section>
+
+        <section class="templates">
+            <h2>Choose a Template</h2>
+            <ul>
+                <li><a href="/templates/instagram">Instagram Story GIF</a></li>
+                <li><a href="/templates/tiktok">TikTok Viral Meme</a></li>
+                <li><a href="/templates/twitter">Twitter Reaction GIF</a></li>
+            </ul>
+        </section>
+
+        <section class="share">
+            <h2>Share to Social Media</h2>
+            <p>Once your GIF is ready, share it directly to your favorite platforms.</p>
+            <!-- Share buttons can be added here -->
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2023 SocialGIFMaker. All rights reserved. <a href="/privacy">Privacy</a> | <a href="/about">About</a></p>
+    </footer>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const files = document.getElementById('files').files;
+            let totalSize = 0;
+            for (let i = 0; i < files.length; i++) {
+                totalSize += files[i].size;
+            }
+            if (totalSize > 100 * 1024 * 1024) { // 100MB limit
+                alert('Total file size exceeds 100MB limit.');
+                return;
+            }
+            if (files.length === 0) {
+                alert('Please select files to upload.');
+                return;
+            }
+
+            const gif = new GIF({
+                workers: 2,
+                quality: 10
+            });
+
+            Array.from(files).forEach(file => {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.onload = function() {
+                    gif.addFrame(img, { delay: 200 });
+                };
+            });
+
+            gif.on('finished', function(blob) {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'animated.gif';
+                link.click();
+            });
+
+            gif.render();
+        });
+    </script>
+</body>
+</html>
